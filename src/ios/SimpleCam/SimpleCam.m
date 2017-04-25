@@ -235,14 +235,14 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // SETTING UP CAM
     if (_mySesh == nil) _mySesh = [[AVCaptureSession alloc] init];
-	_mySesh.sessionPreset = AVCaptureSessionPresetPhoto;
+    _mySesh.sessionPreset = AVCaptureSessionPresetPhoto;
     
     _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_mySesh];
-	_captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-	_captureVideoPreviewLayer.frame = _imageStreamV.layer.bounds; // parent of layer
+    _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _captureVideoPreviewLayer.frame = _imageStreamV.layer.bounds; // parent of layer
+
+    [_imageStreamV.layer addSublayer:_captureVideoPreviewLayer];
     
-	[_imageStreamV.layer addSublayer:_captureVideoPreviewLayer];
-	
     // rear camera: 0 front camera: 1
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     if (devices.count==0) {
@@ -258,22 +258,22 @@ static CGFloat optionUnavailableAlpha = 0.2;
     }
     
     NSError * error = nil;
-	AVCaptureDeviceInput * input = [AVCaptureDeviceInput deviceInputWithDevice:_myDevice error:&error];
+    AVCaptureDeviceInput * input = [AVCaptureDeviceInput deviceInputWithDevice:_myDevice error:&error];
     
-	if (!input) {
-		// Handle the error appropriately.
-		NSLog(@"SC: ERROR: trying to open camera: %@", error);
+    if (!input) {
+        // Handle the error appropriately.
+        NSLog(@"SC: ERROR: trying to open camera: %@", error);
         [_delegate simpleCam:self didFinishWithImage:_capturedImage];
-	}
+    }
     
-	[_mySesh addInput:input];
+    [_mySesh addInput:input];
     
     _stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
     NSDictionary * outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [_stillImageOutput setOutputSettings:outputSettings];
     [_mySesh addOutput:_stillImageOutput];
     
-	[_mySesh startRunning];
+    [_mySesh startRunning];
     
     if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
@@ -327,10 +327,10 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- VERTICAL BACKGROUND LAYER BEGIN -- //
     CGRect frame;
-    CGFloat width = screenHeight * 0.10;
-    frame.size = CGSizeMake(width, self.view.frame.size.height);
-    frame.origin.x = self.view.frame.size.width - width;
-    frame.origin.y = 0;
+    CGFloat height = screenHeight * 0.12;
+    frame.size = CGSizeMake(self.view.frame.size.width, height);
+    frame.origin.x = 0;
+    frame.origin.y = self.view.frame.size.height - height;
     self.verticalBackgroundLayer = [[UIView alloc] initWithFrame:frame];
     self.verticalBackgroundLayer.backgroundColor = [UIColor blackColor];
     self.verticalBackgroundLayer.backgroundColor = [UIColor colorWithRed:0
@@ -338,7 +338,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
                                                                   blue:0
                                                                  alpha:0.3f];
     self.verticalBackgroundLayer.autoresizingMask =
-        UIViewAutoresizingFlexibleHeight |
+        UIViewAutoresizingFlexibleWidth |
         UIViewAutoresizingFlexibleTopMargin |
         UIViewAutoresizingFlexibleLeftMargin;
     
@@ -346,8 +346,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // Back button
     frame.size = CGSizeMake(120, 40);
-    frame.origin.x = (self.verticalBackgroundLayer.frame.size.width - frame.size.width)/2;
-    frame.origin.y = self.verticalBackgroundLayer.frame.size.height - frame.size.height - 20;
+    frame.origin.x = (self.verticalBackgroundLayer.frame.size.width - frame.size.width);
+    frame.origin.y = (self.verticalBackgroundLayer.frame.size.height - frame.size.height)/2;
     _backBtn = [[UIButton alloc] initWithFrame:frame];
     [_backBtn setTitle:@"Cancel" forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -365,8 +365,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // Switch camera button
     frame.size = cameraRotateImg.size;
-    frame.origin.x = (self.verticalBackgroundLayer.frame.size.width - frame.size.width)/2;
-    frame.origin.y = 20;
+    frame.origin.x = 20;
+    frame.origin.y = (self.verticalBackgroundLayer.frame.size.height - frame.size.height)/2;;
     _switchCameraBtn = [[UIButton alloc] initWithFrame:frame];
     [_switchCameraBtn setImage:cameraRotateImg forState:UIControlStateNormal];
     [_switchCameraBtn addTarget:self action:@selector(switchCameraBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -393,7 +393,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     // -- VERTICAL BACKGROUND LAYER END -- //
     
     // -- HORIZONTAL BACKGROUND LAYER START -- //
-    CGFloat height = screenHeight * 0.08;
+    // CGFloat height = screenHeight * 0.08;
     frame.size = CGSizeMake(self.view.frame.size.width, height);
     frame.origin.x = 0;
     frame.origin.y = self.view.frame.size.height - height;
