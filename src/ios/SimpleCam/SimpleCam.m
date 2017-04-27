@@ -374,7 +374,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     [self.verticalBackgroundLayer addSubview:_backBtn];
     
     // Switch camera button
-    frame.size = cameraRotateImg.size;
+    frame.size = CGSizeMake(cameraRotateImg.size.width * 0.75, cameraRotateImg.size.height * 0.75);
     frame.origin.x = 20;
     frame.origin.y = (self.verticalBackgroundLayer.frame.size.height - frame.size.height)/2;;
     _switchCameraBtn = [[UIButton alloc] initWithFrame:frame];
