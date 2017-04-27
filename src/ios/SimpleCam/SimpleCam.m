@@ -240,9 +240,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _mySesh.sessionPreset = AVCaptureSessionPresetMedium;
     } else if([_mySesh canSetSessionPreset:AVCaptureSessionPreset1280x720]){
         _mySesh.sessionPreset = AVCaptureSessionPreset1280x720;
-    } else if([session canSetSessionPreset:AVCaptureSessionPresetLow]){
+    } else if([_mySesh canSetSessionPreset:AVCaptureSessionPresetLow]){
         _mySesh.sessionPreset = AVCaptureSessionPresetLow;
-    } else if([session canSetSessionPreset:AVCaptureSessionPreset640x480]){
+    } else if([_mySesh canSetSessionPreset:AVCaptureSessionPreset640x480]){
         _mySesh.sessionPreset = AVCaptureSessionPreset640x480;
     }
 
