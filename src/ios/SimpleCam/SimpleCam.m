@@ -248,7 +248,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
     
     _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_mySesh];
-    _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     _captureVideoPreviewLayer.frame = _imageStreamV.layer.bounds; // parent of layer
 
     [_imageStreamV.layer addSublayer:_captureVideoPreviewLayer];
