@@ -219,7 +219,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
+    _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
@@ -624,16 +624,18 @@ static CGFloat optionUnavailableAlpha = 0.2;
 - (void) switchCameraBtnPressed:(id)sender {
     if (isCapturingImage != YES) {
         if (_myDevice == [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][0]) {
-            // rear active, switch to front
-            _myDevice = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][1];
+            if([AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count > 1){
+                // rear active, switch to front
+                _myDevice = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][1];
             
-            [_mySesh beginConfiguration];
-            AVCaptureDeviceInput * newInput = [AVCaptureDeviceInput deviceInputWithDevice:_myDevice error:nil];
-            for (AVCaptureInput * oldInput in _mySesh.inputs) {
-                [_mySesh removeInput:oldInput];
+                [_mySesh beginConfiguration];
+                AVCaptureDeviceInput * newInput = [AVCaptureDeviceInput deviceInputWithDevice:_myDevice error:nil];
+                for (AVCaptureInput * oldInput in _mySesh.inputs) {
+                    [_mySesh removeInput:oldInput];
+                }
+                [_mySesh addInput:newInput];
+                [_mySesh commitConfiguration];
             }
-            [_mySesh addInput:newInput];
-            [_mySesh commitConfiguration];
         }
         else if (_myDevice == [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][1]) {
             // front active, switch to rear
