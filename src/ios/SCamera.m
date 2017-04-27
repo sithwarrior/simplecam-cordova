@@ -146,7 +146,7 @@
 {
     SCPictureOptions* pictureOptions = [[SCPictureOptions alloc] init];
 
-    pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(50)];
+    pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(100)];
 
     NSNumber* targetWidth = [command argumentAtIndex:1 withDefault:nil];
     NSNumber* targetHeight = [command argumentAtIndex:2 withDefault:nil];

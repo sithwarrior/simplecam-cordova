@@ -236,14 +236,14 @@ static CGFloat optionUnavailableAlpha = 0.2;
     // SETTING UP CAM
     if (_mySesh == nil) _mySesh = [[AVCaptureSession alloc] init];
 
-    if ([_mySesh canSetSessionPreset:AVCaptureSessionPresetMedium]) {
-        _mySesh.sessionPreset = AVCaptureSessionPresetMedium;
-    } else if([_mySesh canSetSessionPreset:AVCaptureSessionPreset1280x720]){
+    if([_mySesh canSetSessionPreset:AVCaptureSessionPreset1280x720]){
         _mySesh.sessionPreset = AVCaptureSessionPreset1280x720;
-    } else if([_mySesh canSetSessionPreset:AVCaptureSessionPresetLow]){
-        _mySesh.sessionPreset = AVCaptureSessionPresetLow;
     } else if([_mySesh canSetSessionPreset:AVCaptureSessionPreset640x480]){
         _mySesh.sessionPreset = AVCaptureSessionPreset640x480;
+    } else if ([_mySesh canSetSessionPreset:AVCaptureSessionPresetMedium]) {
+        _mySesh.sessionPreset = AVCaptureSessionPresetMedium;
+    } else  else if([_mySesh canSetSessionPreset:AVCaptureSessionPresetLow]){
+        _mySesh.sessionPreset = AVCaptureSessionPresetLow;
     }
 
     
