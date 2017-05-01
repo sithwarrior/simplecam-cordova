@@ -102,7 +102,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     if (self) {
         
         // Custom initialization
-        self.controlAnimateDuration = 0.25;
+        self.controlAnimateDuration = 0;
     }
     return self;
 }
@@ -175,7 +175,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) animateIntoView
 {
-    [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    //
+    [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _imageStreamV.alpha = 1;
         _rotationCover.alpha = 1;
     } completion:^(BOOL finished) {
@@ -283,8 +284,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     [_stillImageOutput setOutputSettings:outputSettings];
     [_mySesh addOutput:_stillImageOutput];
     
-    [_mySesh startRunning];
-    
     if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
     }
@@ -292,6 +291,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
     }
     
+    [_mySesh startRunning];
+
     // -- LOAD ROTATION COVERS BEGIN -- //
     /*
      Rotating causes a weird flicker, I'm in the process of looking for a better
@@ -486,7 +487,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     } completion:nil];
 }
 
-- (void) capturePhoto {
+- (void) capturePhoto {    
     if (isCapturingImage) {
         return;
     }
@@ -746,20 +747,19 @@ static CGFloat optionUnavailableAlpha = 0.2;
 - (void) resizeImage {
     
     // Set Orientation
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? YES : NO;
+//    BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? YES : NO;
     
     // Set Size
-    CGSize size = (isLandscape) ? CGSizeMake(screenHeight, screenWidth) : CGSizeMake(screenWidth, screenHeight);
+//    CGSize size = (isLandscape) ? CGSizeMake(screenHeight, screenWidth) : CGSizeMake(screenWidth, screenHeight);
     
     // Set Draw Rect
-    CGRect drawRect = [self calculateBoundsForSource:_capturedImageV.image.size
-                                          withTarget:size];;
+//    CGRect drawRect = [self calculateBoundsForSource:_capturedImageV.image.size withTarget:size];
     
     // START CONTEXT
-    UIGraphicsBeginImageContextWithOptions(size, YES, 2.0);
-    [_capturedImageV.image drawInRect:drawRect];
-    _capturedImageV.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+        //    UIGraphicsBeginImageContextWithOptions(size, YES, 2.0);
+        //    [_capturedImageV.image drawInRect:drawRect];
+        //    _capturedImageV.image = UIGraphicsGetImageFromCurrentImageContext();
+        //    UIGraphicsEndImageContext();
     // END CONTEXT
     
     // See if someone's waiting for resized image
@@ -847,7 +847,10 @@ static CGFloat optionUnavailableAlpha = 0.2;
     // Need alpha 0.0 before dismissing otherwise sticks out on dismissal
     _rotationCover.alpha = 0.0;
     
-    [self dismissViewControllerAnimated:YES completion:^{
+    // free memory associated with camera and video, before dismissing view.
+    [_mySesh stopRunning];
+
+    [self dismissViewControllerAnimated:NO completion:^{
         
         completion();
         
@@ -855,7 +858,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
         isImageResized = NO;
         isSaveWaitingForResizedImage = NO;
         
-        [_mySesh stopRunning];
         _mySesh = nil;
         
         _capturedImage = nil;
