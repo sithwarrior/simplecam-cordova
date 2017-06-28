@@ -1,5 +1,5 @@
 {
-  "name": "simplecam-cordova",
+  "name": "simple-cam-ios",
   "version": "1.0.0",
   "description": "A camera plugin that has uses a bit less memory than cordova-plugin-camera",
   "main": "www/index.js",
