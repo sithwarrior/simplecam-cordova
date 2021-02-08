@@ -530,23 +530,28 @@ static CGFloat optionUnavailableAlpha = 0.2;
          
          if (_myDevice == [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][0]) {
              // rear camera active
-             if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-                 CGImageRef cgRef = capturedImage.CGImage;
-                 capturedImage = [[UIImage alloc] initWithCGImage:cgRef scale:1.0 orientation:UIImageOrientationUp];
-             }
-             else if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+
+             UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+             
+             if (orientation == UIDeviceOrientationLandscapeRight) {
                  CGImageRef cgRef = capturedImage.CGImage;
                  capturedImage = [[UIImage alloc] initWithCGImage:cgRef scale:1.0 orientation:UIImageOrientationDown];
+             }
+             else if (orientation == UIDeviceOrientationLandscapeLeft) {
+                 CGImageRef cgRef = capturedImage.CGImage;
+                 capturedImage = [[UIImage alloc] initWithCGImage:cgRef scale:1.0 orientation:UIImageOrientationUp];
              }
          }
          else if (_myDevice == [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][1]) {
              // front camera active
              
              // flip to look the same as the camera
-             if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)
-                 capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationDown];
-             else if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
+             UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+             
+             if (orientation == UIDeviceOrientationLandscapeRight)
                  capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationUp];
+             else if (orientation == UIDeviceOrientationLandscapeLeft)
+                 capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationDown];
              
          }
          
@@ -575,7 +580,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 - (BOOL) retakePhoto {
     if (_capturedImageV.image) {
         _imageStreamV.alpha = 1.0f;
-        _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
+        _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
         _capturedImageV.backgroundColor = [UIColor clearColor];
         _capturedImageV.image = nil;
         _capturedImage = nil;

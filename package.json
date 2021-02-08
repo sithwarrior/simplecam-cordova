@@ -1,6 +1,6 @@
 {
   "name": "simple-cam-ios",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A camera plugin that has uses a bit less memory than cordova-plugin-camera",
   "main": "www/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "camera"
   ],
-  "author": "modohash, lightmind",
+  "author": "modohash, lightmind, sithwarrior",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sithwarrior/simplecam-cordova/issues"
